@@ -27,6 +27,9 @@ export const useKeyboard = () => {
     moveLeft: false,
     moveRight: false,
     jump: false,
+  });
+
+  const [quickAccessActions, setQuickAccessActions] = useState({
     changeItem1: false,
     changeItem2: false,
     changeItem3: false,
@@ -42,14 +45,21 @@ export const useKeyboard = () => {
     const action = actionByKey(event.code);
 
     if (action) {
+      if (event.code.includes("Digit")) {
+        setQuickAccessActions((prev) => ({ ...prev, [action]: true }));
+        return;
+      }
       setActions((prev) => ({ ...prev, [action]: true }));
     }
   }, []);
 
   const handleKeyUp = useCallback((event: KeyboardEvent) => {
     const action = actionByKey(event.code);
-
     if (action) {
+      if (event.code.includes("Digit")) {
+        setQuickAccessActions((prev) => ({ ...prev, [action]: false }));
+        return;
+      }
       setActions((prev) => ({ ...prev, [action]: false }));
     }
   }, []);
@@ -63,5 +73,5 @@ export const useKeyboard = () => {
     };
   }, [handleKeyDown, handleKeyUp]);
 
-  return actions;
+  return { actions, quickAccessActions };
 };

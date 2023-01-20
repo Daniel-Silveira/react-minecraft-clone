@@ -1,40 +1,13 @@
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
 import { useKeyboard } from "../../hooks/useKeyboard";
 import { cubeTypes, useStore } from "../../hooks/useStore";
 import * as S from "./styles";
 
-export const QuickAccessBar = () => {
-  const actions = useKeyboard();
-  const [quickAccess, changeItemQuickAccess] = useStore((state) => [
-    state.quickAccess,
-    state.changeItemQuickAccess,
-  ]);
-
+const Component = ({ actions, quickAccess, changeItemQuickAccess }: any) => {
   useEffect(() => {
-    const options = [
-      actions.changeItem1,
-      actions.changeItem2,
-      actions.changeItem3,
-      actions.changeItem4,
-      actions.changeItem5,
-      actions.changeItem6,
-      actions.changeItem7,
-      actions.changeItem8,
-      actions.changeItem9,
-    ];
-
+    const options = Object.values(actions);
     changeItemQuickAccess(options.findIndex((boolean) => boolean) + 1);
-  }, [
-    actions.changeItem1,
-    actions.changeItem2,
-    actions.changeItem3,
-    actions.changeItem4,
-    actions.changeItem5,
-    actions.changeItem6,
-    actions.changeItem7,
-    actions.changeItem8,
-    actions.changeItem9,
-  ]);
+  }, [actions]);
 
   return (
     <S.Wrapper>
@@ -46,5 +19,23 @@ export const QuickAccessBar = () => {
         ))}
       </S.Container>
     </S.Wrapper>
+  );
+};
+
+const RenderQuickAccessBar = memo(Component);
+
+export const QuickAccessBar = () => {
+  const { quickAccessActions } = useKeyboard();
+  const [quickAccess, changeItemQuickAccess] = useStore((state) => [
+    state.quickAccess,
+    state.changeItemQuickAccess,
+  ]);
+
+  return (
+    <RenderQuickAccessBar
+      quickAccess={quickAccess}
+      changeItemQuickAccess={changeItemQuickAccess}
+      actions={quickAccessActions}
+    />
   );
 };

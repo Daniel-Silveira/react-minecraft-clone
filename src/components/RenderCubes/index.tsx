@@ -1,10 +1,9 @@
+import { memo } from "react";
 import { CubeDomain } from "../../domains/cubes/cube.domain";
 import { useStore } from "../../hooks/useStore";
 import { Cube } from "../Cube";
 
-export const Cubes = () => {
-  const [cubes] = useStore((state) => [state.cubes]);
-
+const Component = ({ cubes }: { cubes: CubeDomain[] }) => {
   if (!cubes?.length) return null;
 
   return (
@@ -19,4 +18,11 @@ export const Cubes = () => {
       ))}
     </>
   );
+};
+
+const RenderCubes = memo(Component);
+
+export const Cubes = () => {
+  const [cubes] = useStore((state) => [state.cubes]);
+  return <RenderCubes cubes={cubes} />;
 };

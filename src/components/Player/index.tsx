@@ -11,7 +11,7 @@ const SPEED: number = 5;
 
 export const Player = () => {
   const [setPosition] = useStore((state) => [state.setPosition]);
-  const actions = useKeyboard();
+  const { actions } = useKeyboard();
   const { camera } = useThree();
   const [ref, api] = useSphere<Mesh>(() => ({
     mass: 1000,

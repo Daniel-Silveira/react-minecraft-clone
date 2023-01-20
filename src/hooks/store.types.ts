@@ -9,4 +9,5 @@ export interface StoreTypes {
   addCube: (x: number, y: number, z: number) => void;
   removeCube: (id: string, x: number, y: number, z: number) => void;
   setPosition: (position: PositionDomain) => void;
+  changeItemQuickAccess: (value: number) => void;
 }
