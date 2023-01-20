@@ -7,6 +7,7 @@ import {
   darkOakPlanks,
   sand,
   bedrock,
+  deepslateTiles,
 } from "./blocks";
 import nether from "./nether.png";
 import skulk from "./skulk.png";
@@ -26,6 +27,7 @@ const sandTexture = transformImage(sand);
 const sprucePlanksTexture = transformImage(sprucePlanks);
 const lightGrayWoolTexture = transformImage(lightGrayWool);
 const darkOakPlanksTexture = transformImage(darkOakPlanks);
+const deepslateTilesTexture = transformImage(deepslateTiles);
 
 export {
   bedRockTexture,
@@ -36,4 +38,5 @@ export {
   sprucePlanksTexture,
   lightGrayWoolTexture,
   darkOakPlanksTexture,
+  deepslateTilesTexture,
 };
