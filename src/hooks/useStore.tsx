@@ -2,12 +2,14 @@ import create from "zustand";
 import { v4 as uuidv4 } from "uuid";
 import {
   darkOakPlanks,
+  deepslateTiles,
   dirt,
   lightGrayWool,
   sprucePlanks,
 } from "../assets/textures/blocks";
 import {
   darkOakPlanksTexture,
+  deepslateTilesTexture,
   dirtTexture,
   lightGrayWoolTexture,
   sprucePlanksTexture,
@@ -21,7 +23,7 @@ export const cubeTypes = [
   { id: 2, image: sprucePlanks, texture: sprucePlanksTexture },
   { id: 3, image: lightGrayWool, texture: lightGrayWoolTexture },
   { id: 4, image: darkOakPlanks, texture: darkOakPlanksTexture },
-  { id: 5 },
+  { id: 5, image: deepslateTiles, texture: deepslateTilesTexture },
   { id: 6 },
   { id: 7 },
   { id: 8 },
@@ -32,18 +34,23 @@ export const useStore = create<StoreTypes>((set) => ({
   cubes: [],
   position: [0, 0, 0],
   quickAccess: 1,
+
   addCube: (x: number, y: number, z: number) => {
     set((prev) => {
       const texture = cubeTypes.find(
         (cube) => cube.id === prev.quickAccess
       )?.texture;
 
-      if (
-        !texture ||
+      const distanceLimitValidation =
         Math.abs(prev.position[0] - x) > 5 ||
         Math.abs(prev.position[1] - y) > 5 ||
-        Math.abs(prev.position[2] - z) > 5
-      ) {
+        Math.abs(prev.position[2] - z) > 5;
+
+      const alreadyExistsCubeOnPlace = !!prev.cubes.find(
+        (cube) => JSON.stringify(cube.position) === JSON.stringify([x, y, z])
+      );
+
+      if (!texture || distanceLimitValidation || alreadyExistsCubeOnPlace) {
         return { ...prev };
       }
 
@@ -59,6 +66,7 @@ export const useStore = create<StoreTypes>((set) => ({
       };
     });
   },
+
   removeCube: (id: string, x: number, y: number, z: number) => {
     set((prev) => {
       if (
@@ -73,11 +81,13 @@ export const useStore = create<StoreTypes>((set) => ({
       };
     });
   },
+
   setPosition: (position: PositionDomain) => {
     set(() => ({
       position,
     }));
   },
+
   changeItemQuickAccess: (value?: number) => {
     set((prev) => {
       if (!value) {
