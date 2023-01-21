@@ -1,20 +1,24 @@
 import { useBox } from "@react-three/cannon";
 import { ThreeEvent } from "@react-three/fiber";
+import { memo } from "react";
 import { Texture } from "three";
 import { PositionDomain } from "../../domains/cubes/position.domain";
-import { useStore } from "../../hooks/useStore";
 
 interface CubeProps {
   id: string;
   position: PositionDomain;
   texture: Texture;
+  handleAddCube: any;
+  handleRemoveCube: any;
 }
 
-export const Cube = ({ id, position, texture }: CubeProps) => {
-  const [addCube, removeCube] = useStore((state) => [
-    state.addCube,
-    state.removeCube,
-  ]);
+export const Component = ({
+  id,
+  position,
+  texture,
+  handleAddCube,
+  handleRemoveCube,
+}: CubeProps) => {
   const [ref]: any = useBox(() => ({
     type: "Static",
     position,
@@ -27,34 +31,34 @@ export const Cube = ({ id, position, texture }: CubeProps) => {
         const { x, y, z } = ref.current.position;
 
         if (!event.nativeEvent.button) {
-          removeCube(id, x, y, z);
+          handleRemoveCube(id, x, y, z);
           return;
         }
 
         const clickedFace = event.faceIndex && Math.floor(event.faceIndex / 2);
 
         if (clickedFace === 0) {
-          addCube(x + 1, y, z);
+          handleAddCube(x + 1, y, z);
           return;
         }
         if (clickedFace === 1) {
-          addCube(x - 1, y, z);
+          handleAddCube(x - 1, y, z);
           return;
         }
         if (clickedFace === 2) {
-          addCube(x, y + 1, z);
+          handleAddCube(x, y + 1, z);
           return;
         }
         if (clickedFace === 3) {
-          addCube(x, y - 1, z);
+          handleAddCube(x, y - 1, z);
           return;
         }
         if (clickedFace === 4) {
-          addCube(x, y, z + 1);
+          handleAddCube(x, y, z + 1);
           return;
         }
         if (clickedFace === 5) {
-          addCube(x, y, z - 1);
+          handleAddCube(x, y, z - 1);
           return;
         }
       }}
@@ -64,3 +68,5 @@ export const Cube = ({ id, position, texture }: CubeProps) => {
     </mesh>
   );
 };
+
+export const Cube = memo(Component);

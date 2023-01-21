@@ -3,8 +3,11 @@ import { usePlane } from "@react-three/cannon";
 import { bedRockTexture } from "../../assets/textures";
 import { useStore } from "../../hooks/useStore";
 import { ThreeEvent } from "@react-three/fiber";
+import { useProgress } from "@react-three/drei";
 
 export const Terrain = () => {
+  const { progress } = useProgress();
+  console.log("progress", progress);
   const [addCube] = useStore((state) => [state.addCube]);
   const [ref] = usePlane<Mesh>(() => ({
     rotation: [-Math.PI / 2, 0, 0],

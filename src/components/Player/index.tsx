@@ -16,7 +16,7 @@ export const Player = () => {
   const [ref, api] = useSphere<Mesh>(() => ({
     mass: 1000,
     type: "Dynamic",
-    position: [0, 1, 0],
+    position: [0, 10, 0],
   }));
 
   const position = useRef<PositionDomain>([0, 0, 0]);

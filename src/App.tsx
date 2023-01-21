@@ -9,8 +9,10 @@ import { useStore } from "./hooks/useStore";
 import { QuickAccessBar } from "./components/QuickAccessBar";
 
 function App() {
-  const [position] = useStore((state) => [state.position]);
-
+  const [position, currentChunk] = useStore((state) => [
+    state.position,
+    state.currentChunk,
+  ]);
   return (
     <div style={{ width: "100vw", height: "100vh" }}>
       <div
@@ -26,6 +28,7 @@ function App() {
           <p>{position[0]?.toFixed()},</p>
           <p style={{ margin: "0 1rem" }}>{position[1]?.toFixed()},</p>
           <p>{position[2]?.toFixed()}</p>
+          {currentChunk && <strong>{currentChunk}</strong>}
         </div>
       </div>
       <Canvas>

@@ -3,9 +3,8 @@ import { CubeDomain } from "../../domains/cubes/cube.domain";
 import { useStore } from "../../hooks/useStore";
 import { Cube } from "../Cube";
 
-const Component = ({ cubes }: { cubes: CubeDomain[] }) => {
+const Component = ({ cubes, addCube, removeCube }: any) => {
   if (!cubes?.length) return null;
-
   return (
     <>
       {cubes.map((cube: CubeDomain) => (
@@ -14,6 +13,8 @@ const Component = ({ cubes }: { cubes: CubeDomain[] }) => {
           id={cube.id}
           position={cube.position}
           texture={cube.texture}
+          handleAddCube={addCube}
+          handleRemoveCube={removeCube}
         />
       ))}
     </>
@@ -23,6 +24,13 @@ const Component = ({ cubes }: { cubes: CubeDomain[] }) => {
 const RenderCubes = memo(Component);
 
 export const Cubes = () => {
-  const [cubes] = useStore((state) => [state.cubes]);
-  return <RenderCubes cubes={cubes} />;
+  const [cubes, addCube, removeCube] = useStore((state) => [
+    state.cubes,
+    state.addCube,
+    state.removeCube,
+  ]);
+
+  return (
+    <RenderCubes cubes={cubes} addCube={addCube} removeCube={removeCube} />
+  );
 };
